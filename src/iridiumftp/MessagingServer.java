@@ -1,11 +1,9 @@
 package iridiumftp;
-import java.net.*;
 import java.io.*;
 import java.net.Socket;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.ListIterator;
-import java.util.Date;
 
 public class MessagingServer implements Runnable
 {
@@ -35,6 +33,7 @@ public class MessagingServer implements Runnable
         port = 25000;      
     
     }//end constructor
+    @SuppressWarnings("SleepWhileInLoop")
     public void run() 
     {
         try

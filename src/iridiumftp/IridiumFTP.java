@@ -39,6 +39,7 @@
  * Aug 8 2014 changed when it is considered a successful connection for the purposes of the 24 hour queue timer. the failed attempts timer is reset when successfully set to binary mode.
  * Aug 8 2014 replaced \n by system dependent newline character in the log file mehtods
  * 10.15.14 removed method this.revalidate() so that it could be compiled with java 1.6 
+ * 10.15.14 updated getDate(). no longer deprecated
  */
 
 package iridiumftp;
@@ -50,6 +51,8 @@ import javax.swing.Timer;
 import java.awt.event.*;
 import javax.swing.text.DefaultCaret;
 import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 
 
@@ -1794,13 +1797,14 @@ public void logText(String header,String line, String logFileName){
  * returns the current GMT date
  * @return
  */
-public String getDate(){
+    public String getDate() {
 
-     Date currentDate = new Date();
-return currentDate.toGMTString();
+        Date currentDate = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy hh:mm:ss z");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return sdf.format(currentDate);
 
-
-}/// end getDate
+    }/// end getDate
 /**
  * returns the current time
  * @return
