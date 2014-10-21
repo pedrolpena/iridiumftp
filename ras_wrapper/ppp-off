@@ -1,0 +1,3 @@
+#!/bin/sh
+
+kill `cat /var/run/ppp0.pid`

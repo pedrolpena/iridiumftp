@@ -1,0 +1,53 @@
+#!/bin/bash
+
+if [ "$2" == "rasdial" ] && [ "$3" == "/disconnect" ]; then
+        echo "Command completed successfully."
+    /etc/ppp/ppp-off
+    exit 0
+fi 
+
+if [ "$2" == "rasdial" ] && [ "$3" != "" ] && [ "$4" == "/d" ]; then
+        echo "Command completed successfully."
+    /etc/ppp/ppp-off
+    exit 0
+fi 
+
+if [ "$2" == "rasdial" ] && [ "$3" != "" ] && [ "$4" == "/disconnect" ]; then
+     echo "Command completed successfully."
+    /etc/ppp/ppp-off
+    exit 0
+fi 
+
+if [ "$2" == "rasdial" ] && [ "$3" == "" ]; then
+     if [ -f /var/run/ppp0.pid ]; then
+        echo "Connected to"
+     else
+        echo "No connections"
+      fi
+exit 0
+fi 
+
+
+if [ "$2" == "rasdial" ] && [ "$3" != "" ]; then
+     echo "Connecting to "${3^^}" ..."
+    /etc/ppp/ppp-on ${3,,}
+    SECONDS=0
+    start=$SECONDS
+    end=$((start+60))
+    while [  $end -gt $SECONDS ] && [ ! -f "/var/run/ppp0.pid" ]; do
+         :
+     done
+     
+    if [  -f "/var/run/ppp0.pid" ]; then
+        echo "Verifying username and password..."
+        sleep 3s
+        echo "Registering your computer on the network..." 
+        sleep 3s       
+        echo "Successfully connected to "${3^^}
+        sleep 1s
+        echo "Command completed successfully."
+    else
+        echo "Remote Access error 635 - An unknown error has occured."
+    fi
+      
+fi

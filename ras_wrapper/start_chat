@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/usr/sbin/chat -e -v -f ./$1
