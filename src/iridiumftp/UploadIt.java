@@ -18,11 +18,16 @@ public class UploadIt
     javax.swing.JTextArea j2;
     boolean dirExists;
     IridiumFTP iFTP1;
-
+    SocketFactoryForFTPClient ssf;
+   
     public UploadIt()
     {
         ftp = new FTPClient();
-        ftp.setConnectTimeout(60000);
+        ssf = new SocketFactoryForFTPClient();
+        ftp.setSocketFactory(ssf);
+        ftp.setConnectTimeout(10000);
+        
+       
 
     }
 
@@ -257,5 +262,12 @@ public boolean closeConnection() throws IOException
             success = uploadFile(file,serverFile);   
         }// end if
         return success; 
-    }// end append file    
+    }// end append file 
+    
+    public void closeAllSockets()
+    {
+        ssf.closeAllConnections();
+    
+    }
+    
 }// end class

@@ -1286,73 +1286,73 @@ public void startQueueTimer(){
 /**
  * this method starts the timer thread that refreshes the user preferences
  */
-public void startPreferenceLoaderTimer(){
+    public void startPreferenceLoaderTimer() {
 
-    prefsActionListener = new ActionListener() {
-        public void actionPerformed(ActionEvent evt) {
+        prefsActionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
             //System.out.println(evt.getActionCommand());
-            try
-            {
-            
-                prefs.flush();
-            }
-            catch(Exception e)
-            {        logExceptions(e);
-                e.printStackTrace();
-            
-            }//end catch
-            
-            if(prefs.getBoolean("close", true))
-            {
-                prefs.putBoolean("close",false);
-                System.exit(0);
-            
-            }//end if
-            
 
-            setGuiVisible(prefs.getBoolean("isVisible", false));
-            
-            
-            if(!prefs.getBoolean("isVisible", false))
-            {
-            
-                serverTextField.setText(prefs.get("serverName","192.111.123.134"));
-                pathTextField.setText(prefs.get("uploadPath", "/default/"));
-                userNameTextField.setText(prefs.get("userName", "username"));
-                serverPasswordField.setText(prefs.get("password", "password"));
-                if(!prefs.get("queueRefresh","5").trim().equals(queueRefreshIntervalTextField.getText().trim()))
-                {
-                    queueRefreshIntervalTextField.setText(prefs.get("queueRefresh","5"));
-                    queueTimer.stop();
-                    queueTimer.setDelay((new Integer(prefs.get("queueRefresh","5")).intValue())*60000);
-                    queueTimer.setInitialDelay(1000);
-                    queueTimer.restart();
-                    
+       //**********************************
+                if (prefs.getBoolean("phoneBookEntryCheckBox", true)
+                        && rD != null && !rD.isAlive()
+                        && u != null && u.isConnected()) {
+                    u.closeAllSockets();
+
+                }//endif
+
+      //**********************************     
+                try {
+
+                    prefs.flush();
+                } catch (Exception e) {
+                    logExceptions(e);
+                    e.printStackTrace();
+
+                }//end catch
+
+                if (prefs.getBoolean("close", true)) {
+                    prefs.putBoolean("close", false);
+                    System.exit(0);
+
                 }//end if
-                transmitCheckbox.setSelected(prefs.getBoolean("transmitCheckbox", true));
-                phoneBookEntryCheckBox.setSelected(prefs.getBoolean("phoneBookEntryCheckBox", true));
-                phoneBookentryTextField.setEditable(!prefs.getBoolean("phoneBookEntryCheckBox", true));
-                phoneBookentryTextField.setText(prefs.get("phoneBookentryTextField", "Iridium")); 
-            
-            }//end if
-            
-            
-        }
-  };
- 
 
-    
- 
-    
-    
-    
-    
-    prefsTimer = new Timer(1000,prefsActionListener);
-    //prefsTimer.setInitialDelay(2000);
-    prefsTimer.start();
-    
+                setGuiVisible(prefs.getBoolean("isVisible", false));
 
-}// end startTimer
+                if (!prefs.getBoolean("isVisible", false)) {
+
+                    serverTextField.setText(prefs.get("serverName", "192.111.123.134"));
+                    pathTextField.setText(prefs.get("uploadPath", "/default/"));
+                    userNameTextField.setText(prefs.get("userName", "username"));
+                    serverPasswordField.setText(prefs.get("password", "password"));
+                    if (!prefs.get("queueRefresh", "5").trim().equals(queueRefreshIntervalTextField.getText().trim())) {
+                        queueRefreshIntervalTextField.setText(prefs.get("queueRefresh", "5"));
+                        queueTimer.stop();
+                        queueTimer.setDelay((new Integer(prefs.get("queueRefresh", "5")).intValue()) * 60000);
+                        queueTimer.setInitialDelay(1000);
+                        queueTimer.restart();
+
+                    }//end if
+                    transmitCheckbox.setSelected(prefs.getBoolean("transmitCheckbox", true));
+                    phoneBookEntryCheckBox.setSelected(prefs.getBoolean("phoneBookEntryCheckBox", true));
+                    phoneBookentryTextField.setEditable(!prefs.getBoolean("phoneBookEntryCheckBox", true));
+                    phoneBookentryTextField.setText(prefs.get("phoneBookentryTextField", "Iridium"));
+
+                }//end if
+
+            }
+
+        };
+
+        if (rD != null && !rD.isAlive() && u != null) {
+            u.ssf.closeAllConnections();
+
+        }//endif
+
+        prefsTimer = new Timer(1000, prefsActionListener);
+        //prefsTimer.setInitialDelay(2000);
+        prefsTimer.start();
+
+    }// end startTimer
 
 
 
