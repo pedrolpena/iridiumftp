@@ -1098,7 +1098,18 @@ if(evt.getActionCommand().equals("AOML"))
             else{
                 if(listOfFiles.length > 0){
                     this.updateStatusTextArea(fileName + " will not be transmitted because it was previously sent.\n");
-                listOfFiles[i].delete();
+                    try{
+                
+                        listOfFiles[i].delete();
+                    
+                    }//end try
+                    catch(Exception e)
+                    {
+                       this.updateStatusTextArea(fileName + " could not be deleted, make sure the current user has\n"); 
+                       this.updateStatusTextArea(" permission to delete this file\n"); 
+                       this.logExceptions(e);
+                    
+                    }//end catch
                 }//end if
 
             }// end else
@@ -1142,21 +1153,31 @@ private File[] filesInQueue(String filePath){
 
     String fileName="";
     for (int i = 0; i < listOfFiles.length; i++) {
-        if (listOfFiles[i].isFile()){
+        if (listOfFiles[i].isFile()) {
             fileName = listOfFiles[i].getName();
 
-            if(!wasTransmitted(fileName)){
+            if (!wasTransmitted(fileName)) {
                 ff[j++] = listOfFiles[i];
 
             }// end if
-            else{
+            else {
                 this.updateStatusTextArea("This file will not be transmitted because it was previously sent.\n");
-                listOfFiles[i].delete();
+                try {
+
+                    listOfFiles[i].delete();
+
+                }//end try
+                catch (Exception e) {
+                    this.updateStatusTextArea(fileName + " could not be deleted, make sure the current user has\n");
+                    this.updateStatusTextArea(" permission to delete this file\n");
+                    this.logExceptions(e);
+
+                }//end catch
 
             }// end else
         }// end if
 
-     }// end for
+    }// end for
     File[] f2 = new File[j];
     for (int i = 0 ; i < j ; i++){
         f2[i] = ff[i];
@@ -1462,7 +1483,18 @@ void setGuiVisible(boolean v)
                                             averageTransferRate = 8000 * fileSize / (uploadEndTime - uploadStartTime);
                                             updateStatusTextArea(fileName + " successfully uploaded\n");
                                             addFile2DB(fileName);
-                                            uFile.delete();
+
+                                            try {
+
+                                                uFile.delete();
+
+                                            }//end try
+                                            catch (Exception e) {
+                                                this.updateStatusTextArea(fileName + " could not be deleted, make sure the current user has\n");
+                                                this.updateStatusTextArea(" permission to delete this file\n");
+                                                this.logExceptions(e);
+
+                                            }//end catch
                                             updateTransmitTextArea();
                                         }// end where file upload verification happens if   
                                         else {
@@ -1821,28 +1853,37 @@ public long getTime(){
  * the method does not verify that a file with a zip extension is
  * really a zip file.
  */
-public void compressFiles(){
+    public void compressFiles() {
 
-    IridiumZipper iz =  new IridiumZipper();
-    File folder = new File(prefs.get("queuePath",pWD.getAbsolutePath()));
-    File[] listOfFiles = folder.listFiles();
-    String fns[];
-if(listOfFiles!=null && listOfFiles.length > 0){
-    for(int i = 0 ; i < listOfFiles.length ; i++){
-        fns = listOfFiles[i].getName().split("\\.");
-        if(fns.length > 1 && !fns[1].toLowerCase().equals("zip") && listOfFiles[i].isFile()){
-            iz = new IridiumZipper();
-            if(iz.compress(listOfFiles[i]))
-                listOfFiles[i].delete();
-        }// end if
+        IridiumZipper iz = new IridiumZipper();
+        File folder = new File(prefs.get("queuePath", pWD.getAbsolutePath()));
+        File[] listOfFiles = folder.listFiles();
+        String fns[];
+        if (listOfFiles != null && listOfFiles.length > 0) {
+            for (int i = 0; i < listOfFiles.length; i++) {
+                fns = listOfFiles[i].getName().split("\\.");
+                if (fns.length > 1 && !fns[1].toLowerCase().equals("zip") && listOfFiles[i].isFile()) {
+                    iz = new IridiumZipper();
+                    if (iz.compress(listOfFiles[i])) {
+                        try {
 
-    }//end for
+                            listOfFiles[i].delete();
 
-    }//end if
+                        }//end try
+                        catch (Exception e) {
+                            this.updateStatusTextArea(fileName + " could not be deleted, make sure the current user has\n");
+                            this.updateStatusTextArea(" permission to delete this file\n");
+                            this.logExceptions(e);
 
+                        }//end catch
+                    }
+                }// end if
 
+            }//end for
 
-}//compress the files
+        }//end if
+
+    }//compress the files
 
 
  static boolean isValidZipFile(final File file) {
