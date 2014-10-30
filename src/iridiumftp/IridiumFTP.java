@@ -1020,7 +1020,7 @@ if(evt.getActionCommand().equals("AOML"))
     rD =  new RasDialer();
     compressFiles();
    
-    updateStatusTextArea("AOML Iridium FTPer version 2.0\n");
+    updateStatusTextArea("AOML Iridium FTPer version 2.1\n");
     //updateStatusTextArea("compiled 09.17.14\n");
     updateStatusTextArea("java vendor " + System.getProperty("java.vendor")+"\n");
     updateStatusTextArea("java version " + System.getProperty("java.version")+"\n");
