@@ -6,7 +6,7 @@ if [ -d "dist" ]; then
 fi
 mkdir ./dist
 rm -r ./iridiumftp
-mv -t ./dist ./IridiumFTP.jar
+mv ./IridiumFTP.jar ./dist
 cp -r ./lib ./dist
 
 
