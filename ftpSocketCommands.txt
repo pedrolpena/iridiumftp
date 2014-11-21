@@ -57,7 +57,8 @@ setPhoneBookEntry=       :sets the name of the phone book entry/script to use wh
 setUseDialer=            :sets a boolean(true/false) indicating whether a ppp dialer is being used. This must be a boolean
 setHost=                 :sets the socket messaging server ip adddress. This number must be greater than -1
 setPort=                 :sets the socket messaging sever port.
-setFileSizeLimit=        :sets the file size limit in bytes. Only files with a size equal to or less then this will be transmitted.
+setFileSizeLimit=        :sets the file size limit in bytes. Only files with a size equal to or less then this will be transmitted
+                              unless the value is set to -1. This value removes the size limit restriction.
 setConfig=               :sets all of the configuration in one line formatted as follows.
                              "<CMD>queuerefresh::queuepath::logfilepath::servername::username::password::uploadpath::transmit::phonebookentry::usedialer::host::port::filesizelimit</CMD>"
                              if the number of fields is different from 13 then  "<CMDERROR>setConfig was not formatted properly</CMDERROR>" will be sent.
