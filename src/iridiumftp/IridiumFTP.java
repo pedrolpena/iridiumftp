@@ -1222,7 +1222,7 @@ private File[] filesInQueue(String filePath){
         f2[i] = ff[i];
     }// end for
     return f2;
-}//end fileLister
+}//end filesInQueue
 
 /**
  * This method checks the sqlite database to see if the file has already been
