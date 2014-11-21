@@ -919,6 +919,13 @@ if(evt.getActionCommand().equals("AOML"))
     {
         prefs.put("port", "25000");
     }//end if  
+        int num;
+        num = prefs.getInt("fileSizeLimit",-2);
+        
+    if(num == -2)
+    {
+        prefs.putInt("fileSizeLimit", -1);
+    }//end if 
     
     
    
@@ -1163,16 +1170,36 @@ private File[] filesInQueue(String filePath){
     File[] ff = new File[listOfFiles.length];
 
     String fileName="";
+    long fileSizeLimit=-2;
+    long fileLength=0;
+    boolean transmitted = false;
+    boolean noLimit = false;
+    boolean tooLarge = false;
+            
     for (int i = 0; i < listOfFiles.length; i++) {
         if (listOfFiles[i].isFile()) {
             fileName = listOfFiles[i].getName();
+            fileLength=listOfFiles[i].length();
+            fileSizeLimit = prefs.getInt("fileSizeLimit", -1);
+            transmitted=wasTransmitted(fileName);
+            noLimit = (fileSizeLimit == -1);
+            tooLarge = (fileLength > fileSizeLimit);
 
-            if (!wasTransmitted(fileName)) {
+            if (!transmitted && (!tooLarge || noLimit)) {
                 ff[j++] = listOfFiles[i];
 
             }// end if
             else {
-                this.updateStatusTextArea("This file will not be transmitted because it was previously sent.\n");
+                
+                if(transmitted){
+                    this.updateStatusTextArea(fileName + " will not be transmitted because it was previously sent.\n");
+                }
+                
+                if(tooLarge){
+                   
+                    this.updateStatusTextArea(fileName + " will not be transmitted because the file size exceeds " + fileSizeLimit + " bytes\n");
+                }                
+                
                 try {
 
                     listOfFiles[i].delete();
@@ -1186,6 +1213,7 @@ private File[] filesInQueue(String filePath){
                 }//end catch
 
             }// end else
+            
         }// end if
 
     }// end for
